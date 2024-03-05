@@ -14,9 +14,9 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "user_tbl")
 public class User implements UserDetails {
@@ -31,6 +31,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private LocalDate DOB;
+
 
 
     @Override
