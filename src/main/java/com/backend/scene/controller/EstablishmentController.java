@@ -18,14 +18,15 @@ public class EstablishmentController {
 
     private final EstablishmentService service;
 
+
     @GetMapping("/{id}")
     public ResponseEntity<EstablishmentDto> getById(@PathVariable Integer id){
-        return new ResponseEntity<>(service.findEstablishmentById(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(service.findEstablishmentById(id), HttpStatus.OK);
     }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<EstablishmentDto>> findAll(){
-        return new ResponseEntity<>(service.findAll(), HttpStatus.FOUND);
+        return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/findByName/{name}")

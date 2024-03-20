@@ -13,7 +13,8 @@ public class userMapper {
                 user.getEmail(),
                 user.getPassword(),
                 user.getRole(),
-                user.getDOB()
+                user.getDOB(),
+                user.getOutstandingAmount()
 
         );
         return userDto;
@@ -27,7 +28,9 @@ public class userMapper {
                 userDto.getPassword(),
                 userDto.getEmail(),
                 userDto.getRole(),
-                userDto.getDOB()
+                userDto.getDOB(),
+                userDto.getOutstandingAmount()
+
 
         );
         return user;

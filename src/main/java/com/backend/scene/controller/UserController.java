@@ -19,9 +19,10 @@ public class UserController {
 
     private final UserService service;
 
-    @GetMapping("/{id}")
+
+    @GetMapping("findById/{id}")
     public ResponseEntity<User> getById(@PathVariable Integer id){
-        return new ResponseEntity<>(service.findById(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
     }
 
     @GetMapping("/findAll")
@@ -37,6 +38,16 @@ public class UserController {
             return new ResponseEntity<>(service.findFromEmail(email), HttpStatus.BAD_REQUEST);
         }else{
             return new ResponseEntity<>(service.findFromEmail(email), HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/findIdByEmail/{email}")
+    public ResponseEntity<User> findIdByEmail(@PathVariable String email){
+        User foundUser = service.findIdByEmail(email);
+        if (foundUser == null){
+            return new ResponseEntity<>(foundUser, HttpStatus.BAD_REQUEST);
+        }else{
+            return new ResponseEntity<>(foundUser, HttpStatus.OK);
         }
     }
 }

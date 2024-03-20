@@ -17,5 +17,6 @@ public class UserDto {
     private String password;
     private Role role;
     private LocalDate DOB;
+    private Integer outstandingAmount;
 
 }
