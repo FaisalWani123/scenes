@@ -4,6 +4,7 @@ import com.backend.scene.dto.FriendDto;
 import com.backend.scene.entity.FriendRequest.AcceptFriendRequest;
 import com.backend.scene.entity.FriendRequest.FindRelationIdRequest;
 import com.backend.scene.entity.FriendResponse.FindRelationIdResponse;
+import com.backend.scene.entity.FriendResponse.FriendListResponse;
 import com.backend.scene.entity.FriendResponse.FriendRequestResponse;
 import com.backend.scene.entity.Friends;
 import com.backend.scene.mapper.friendMapper;
@@ -58,6 +59,16 @@ public class FriendController {
     public ResponseEntity<FindRelationIdResponse> findRelationId(@RequestBody FindRelationIdRequest request){
         FindRelationIdResponse response = friendService.findRelationId(request);
         if (response.getFound()){
+            return ResponseEntity.ok(response);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/getFriendList/{id}")
+    public ResponseEntity<FriendListResponse> getFriendList(@PathVariable Integer id){
+        FriendListResponse response = friendService.getFriendList(id);
+        if (response.getConfirmed()){
             return ResponseEntity.ok(response);
         } else {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

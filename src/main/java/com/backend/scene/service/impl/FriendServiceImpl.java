@@ -4,15 +4,19 @@ import com.backend.scene.dto.FriendDto;
 import com.backend.scene.entity.FriendRequest.AcceptFriendRequest;
 import com.backend.scene.entity.FriendRequest.FindRelationIdRequest;
 import com.backend.scene.entity.FriendResponse.FindRelationIdResponse;
+import com.backend.scene.entity.FriendResponse.FriendList;
+import com.backend.scene.entity.FriendResponse.FriendListResponse;
 import com.backend.scene.entity.FriendResponse.FriendRequestResponse;
 import com.backend.scene.entity.Friends;
 import com.backend.scene.repository.FriendsRepository;
 import com.backend.scene.repository.UserRepository;
 import com.backend.scene.service.FriendService;
 import com.backend.scene.user.User;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.stereotype.Service;
 import com.backend.scene.mapper.friendMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,13 +38,19 @@ public class FriendServiceImpl implements FriendService {
                 .build();
     }
 
+    private FriendListResponse friendListResponseError(String errorMsg){
+        return FriendListResponse.builder()
+                .errorMsg(errorMsg)
+                .confirmed(false)
+                .build();
+    }
+
     private FindRelationIdResponse findRelationIdResponseError(String errorMsg){
         return FindRelationIdResponse.builder()
                 .errorMsg(errorMsg)
                 .found(false)
                 .build();
     }
-
     private Boolean relationMatchesIds(AcceptFriendRequest request){
         FindRelationIdRequest newRequst = FindRelationIdRequest.builder()
                 .mainUser(request.getUserRequestSentFrom())
@@ -113,7 +123,6 @@ public class FriendServiceImpl implements FriendService {
             return this.friendRequestResponseError("relationship id provided is wrong");
         }
 
-
         //making a new relationship for the user who accepted the request.
         FriendDto newFriendRelation = FriendDto.builder()
                 .userId(acceptRequest.getUserRequestSentTo())
@@ -154,6 +163,41 @@ public class FriendServiceImpl implements FriendService {
         }
         return this.findRelationIdResponseError("this friend is not in your friendlist");
 
+    }
+
+    @Override
+    public FriendListResponse getFriendList(Integer userId) {
+        List<Friends> listOfFriends = friendsRepository.findAllFriendsByUserId(userId);
+        List<FriendList> friendList = new ArrayList<>();
+
+        if (listOfFriends == null){
+            return this.friendListResponseError("No friends found");
+        }
+
+        listOfFriends.removeIf(friend -> !friend.getIsAccepted());
+
+        for (Friends friend : listOfFriends){
+            friendList.add(this.mapToFriendList(friend));
+        }
+        return FriendListResponse.builder()
+                .friendList(friendList)
+                .confirmed(true)
+                .errorMsg(null)
+                .build();
+    }
+
+    private FriendList mapToFriendList(Friends friends){
+        User user = userRepository.findById(friends.getUserFriendId()).orElse(null);
+        if (user == null){
+            return null;
+        }
+        return FriendList.builder()
+                .friendshipId(friends.getFriendship_id())
+                .friendUserId(friends.getUserFriendId())
+                .friendFirstName(user.getFirstName())
+                .friendLastName(user.getLastName())
+                .requestAccepted(friends.getIsAccepted())
+                .build();
     }
 
 
