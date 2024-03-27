@@ -18,5 +18,6 @@ public class UserDto {
     private Role role;
     private LocalDate DOB;
     private Integer outstandingAmount;
+    private Boolean male;
 
 }

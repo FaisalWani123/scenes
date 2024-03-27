@@ -15,5 +15,6 @@ public class FriendDto {
     private Integer userFriendId;
     private Boolean isAccepted;
     private Date friendsSince;
+    private Boolean male;
 }
 

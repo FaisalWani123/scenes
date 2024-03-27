@@ -17,6 +17,10 @@ public interface FriendService {
 
     FriendListResponse getFriendList(Integer userId);
 
+    FriendListResponse getPendingRequestsForUser(Integer userId);
+
+
+
 
 
 }

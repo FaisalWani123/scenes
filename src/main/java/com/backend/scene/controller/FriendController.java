@@ -10,6 +10,7 @@ import com.backend.scene.entity.Friends;
 import com.backend.scene.mapper.friendMapper;
 import com.backend.scene.repository.FriendsRepository;
 import com.backend.scene.service.FriendService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +75,19 @@ public class FriendController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/getPendingRequestsOfUser/{id}")
+    public ResponseEntity<FriendListResponse> getPendingRequestsOfUser(@PathVariable Integer id){
+        FriendListResponse response = friendService.getPendingRequestsForUser(id);
+        if (response.getConfirmed()){
+            return ResponseEntity.ok(response);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //<YOUR_GithubPersonalAccessToken_HERE>
+    //<YOUR_GithubPersonalAccessToken_HERE>
 
 
 

@@ -29,4 +29,5 @@ public class Friends {
 
     @UpdateTimestamp
     private Date friendsSince;
+    private Boolean male;
 }

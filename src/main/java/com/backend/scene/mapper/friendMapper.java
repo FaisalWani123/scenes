@@ -11,6 +11,7 @@ public class friendMapper {
                 .userFriendId(friendDto.getUserFriendId())
                 .isAccepted(friendDto.getIsAccepted())
                 .friendsSince(friendDto.getFriendsSince())
+                .male(friendDto.getMale())
                 .build();
     }
 
@@ -21,6 +22,7 @@ public class friendMapper {
                 .userFriendId(friends.getUserFriendId())
                 .isAccepted(friends.getIsAccepted())
                 .friendsSince(friends.getFriendsSince())
+                .male(friends.getMale())
                 .build();
     }
 }

@@ -32,6 +32,7 @@ public class User implements UserDetails {
     private Role role;
     private LocalDate DOB;
     private Integer outstandingAmount;
+    private Boolean male;
 
 
 

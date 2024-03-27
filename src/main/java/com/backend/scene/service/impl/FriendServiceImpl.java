@@ -16,6 +16,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.stereotype.Service;
 import com.backend.scene.mapper.friendMapper;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -186,6 +187,21 @@ public class FriendServiceImpl implements FriendService {
                 .build();
     }
 
+    @Override
+    public FriendListResponse getPendingRequestsForUser(Integer userId) {
+        List<Friends> listOfFriends = friendsRepository.findAllFriendsByUserId(userId);
+        List<Friends> pendingList = listOfFriends.stream().filter(friend -> !friend.getIsAccepted()).toList();
+        List<FriendList> friendList = new ArrayList<>();
+        for (Friends friends: pendingList){
+            friendList.add(this.mapToFriendList(friends));
+        }
+        return FriendListResponse.builder()
+                .friendList(friendList)
+                .confirmed(true)
+                .errorMsg(null)
+                .build();
+    }
+
     private FriendList mapToFriendList(Friends friends){
         User user = userRepository.findById(friends.getUserFriendId()).orElse(null);
         if (user == null){
@@ -197,6 +213,7 @@ public class FriendServiceImpl implements FriendService {
                 .friendFirstName(user.getFirstName())
                 .friendLastName(user.getLastName())
                 .requestAccepted(friends.getIsAccepted())
+                .male(friends.getMale())
                 .build();
     }
 

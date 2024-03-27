@@ -14,4 +14,5 @@ public class FriendList {
     private String friendFirstName;
     private String friendLastName;
     private Boolean requestAccepted;
+    private Boolean male;
 }
